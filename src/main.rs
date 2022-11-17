@@ -26,6 +26,14 @@ fn preprocess(input: String) -> String {
     return result.to_string();
 }
 
+fn pad_sequence(sequence : &Vec<String>, pad_char : &String, max_length : usize) -> Vec<String> {
+    let mut padded_sequence = sequence.clone();
+    while padded_sequence.len() < max_length {
+        padded_sequence.push(pad_char.to_string());
+    }
+    return padded_sequence;
+}
+
 fn split_sentence(input: String) -> Vec<String> {
     // Use regexp to split on punctuation
     let result: Vec<_> = input.split_inclusive(&[',',' ','.',';'][..]).collect();
@@ -48,14 +56,11 @@ fn create_word_vocabulary(input: Vec<String>) -> HashMap<String, i32> {
 
 fn tokenize_sentence(input: Vec<String>, word_vocabulary: HashMap<String, i32>, oov: String) -> Vec<i32> {
     let mut result = Vec::new();
-    println!("OOV: {}", oov);
     for i in input {
         // Try get the word from the vocabulary
-        println!("Word: {}", i);
-        println!("Word number: {:?}", word_vocabulary.get(&i));
         let word_number = match word_vocabulary.get(&i){
             Some(w) => w,
-            None => word_vocabulary.get(&oov).unwrap(),
+            None => word_vocabulary.get(&oov).unwrap()
         };
         result.push(*word_number);
     }
@@ -67,7 +72,7 @@ fn main(){
     let oov = "<OOV>".to_string();
 
     // read filepath
-    let filepath: String = "./sentence.txt".to_string();
+    let filepath: String = "./train.txt".to_string();
 
     // read file
     let contents = std::fs::read_to_string(filepath.trim()).expect("Failed to read file");
@@ -102,6 +107,9 @@ fn main(){
     println!("Number of words: {}", words_set.len());
 
     let word_vocabulary = create_word_vocabulary(words_set);
-    let test = tokenize_sentence(split_sentence(preprocess("This is a test.".to_string())), word_vocabulary, oov);
-    println!("Tokenized sentence: {:?}", test);
+    let test_string : String = "This is a test sentence".to_string();
+    let test_sentence = split_sentence(preprocess(test_string));
+    let padded_sentence = pad_sequence(&test_sentence, &oov, 10);
+    let tokenized_sentence = tokenize_sentence(padded_sentence, word_vocabulary, oov);
+    println!("Tokenized sentence: {:?}", tokenized_sentence);
 }

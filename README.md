@@ -8,8 +8,8 @@ Given a corpus in train.txt it will train a basic tokenizer that will store each
 ![demo](https://raw.githubusercontent.com/Polifack/Rust-Tokenizer/main/pics/demo.png)
 
 ## Roadmap
-- Encode words as integers.
-- Add padding capabilities.
+- Encode words as integers: Done
+- Add padding capabilities: Done
 - Turn into a class and turn constants (filter_chars, oov_char, turn_lower, split_char, num_words) into parameters.
 - Add option to tokenize into character level. 
 - Add n-grams tokenizer.
