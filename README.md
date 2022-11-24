@@ -10,6 +10,6 @@ Given a corpus in train.txt it will train a basic tokenizer that will store each
 ## Roadmap
 - Encode words as integers: Done
 - Add padding capabilities: Done
-- Turn into a class and turn constants (filter_chars, oov_char, turn_lower, split_char, num_words) into parameters.
 - Add option to tokenize into character level. 
+- Add customizable filter.
 - Add n-grams tokenizer.
